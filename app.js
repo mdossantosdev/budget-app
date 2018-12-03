@@ -30,19 +30,30 @@ const UIController = (() => {
 // Global App Controller
 const controller = ((budgetCtrl, UICtrl) => {
 
-  const DOM = UICtrl.getDOMstrings();
+  const setupEventListeners = () => {
+    const DOM = UICtrl.getDOMstrings();
+
+    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+
+    document.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        ctrlAddItem();
+      }
+    });
+  };
 
   const ctrlAddItem = () => {
     // Get the field input data
     const input = UICtrl.getInput();
   }
 
-  document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
-
-  document.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-      ctrlAddItem();
+  return {
+    init: () => {
+      console.log('Budget App has started.');
+      setupEventListeners();
     }
-  });
+  }
 
 })(budgetController, UIController);
+
+controller.init();
