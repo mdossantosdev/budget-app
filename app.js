@@ -70,6 +70,8 @@ const UIController = (() => {
     inputDescription: '.add__description',
     inputValue: '.add__value',
     inputBtn: '.add__btn',
+    incomeContainer: '.income__list',
+    expensesContainer: '.expenses__list'
   };
 
   return {
@@ -79,6 +81,56 @@ const UIController = (() => {
         description: document.querySelector(DOMstrings.inputDescription).value,
         value: document.querySelector(DOMstrings.inputValue).value
       };
+    },
+
+    addListItem: (obj, type) => {
+      let html, newHtml, element;
+
+      // Create HTML string with placeholder text
+      if (type === 'inc') {
+        element = DOMstrings.incomeContainer;
+
+        html = `
+          <div class="item clearfix" id="inc-%id%">
+            <div class="item__description">%description%</div>
+            <div class="right clearfix">
+              <div class="item__value">%value%</div>
+              <div class="item__delete">
+                <button class="item__delete--btn">
+                  <i class="ion-ios-close-outline"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (type === 'exp') {
+        element = DOMstrings.expensesContainer;
+
+        html = `
+          <div class="item clearfix" id="exp-%id%">
+            <div class="item__description">%description%</div>
+            <div class="right clearfix">
+              <div class="item__value">%value%</div>
+              <div class="item__percentage">21%</div>
+              <div class="item__delete">
+                <button class="item__delete--btn">
+                  <i class="ion-ios-close-outline"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Replace the placeholder text with some actual data
+      newHtml = html.replace('%id%', obj.id);
+      newHtml = newHtml.replace('%description%', obj.description);
+      newHtml = newHtml.replace('%value%', obj.value);
+
+      // Insert HTML into the DOM
+      document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
     },
 
     getDOMstrings: () => {
@@ -111,6 +163,9 @@ const controller = ((budgetCtrl, UICtrl) => {
 
     // Add the item to the budget controller
     newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+
+    // Add the item to the UI
+    UICtrl.addListItem(newItem, input.type);
   }
 
   return {
