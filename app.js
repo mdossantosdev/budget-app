@@ -1,5 +1,22 @@
 // Budget Controller
-const budgetController = (() => {})();
+const budgetController = (() => {
+
+  class Expense {
+    constructor(id, description, value) {
+      this.id = id;
+      this.description = description;
+      this.value = value;
+    }
+  };
+
+  class Income {
+    constructor(id, description, value) {
+      this.id = id;
+      this.description = description;
+      this.value = value;
+    }
+  };
+})();
 
 // UI Controller
 const UIController = (() => {
