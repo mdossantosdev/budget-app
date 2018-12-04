@@ -26,7 +26,7 @@ const budgetController = (() => {
       exp: 0,
       inc: 0
     }
-  }
+  };
 
   return {
     addItem: (type, desc, val) => {
@@ -53,6 +53,10 @@ const budgetController = (() => {
 
       // Return the new element
       return newItem;
+    },
+
+    testing: () => {
+      console.log(data);
     }
   };
 
