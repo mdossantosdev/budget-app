@@ -19,14 +19,42 @@ const budgetController = (() => {
 
   const data = {
     allItems: {
-      expenses: [],
-      incomes: []
+      exp: [],
+      inc: []
     },
     totals: {
-      expenses: 0,
-      incomes: 0
+      exp: 0,
+      inc: 0
     }
   }
+
+  return {
+    addItem: (type, desc, val) => {
+      let newItem, id;
+
+      // Create new id
+      if (data.allItems[type].length > 0) {
+        id = data.allItems[type][data.allItems[type].length - 1].id + 1;
+      } else {
+        id = 0;
+      }
+
+      // Create new item based on 'inc' or 'exp' type
+      if (type === 'exp') {
+        newItem = new Expense(id, desc, val);
+      }
+
+      if (type === 'inc') {
+        newItem = new Income(id, desc, val);
+      }
+
+      // Push new item into the data structure
+      data.allItems[type].push(newItem);
+
+      // Return the new element
+      return newItem;
+    }
+  };
 
 })();
 
@@ -50,7 +78,7 @@ const UIController = (() => {
     },
 
     getDOMstrings: () => {
-      return DOMstrings
+      return DOMstrings;
     }
   };
 
@@ -72,8 +100,13 @@ const controller = ((budgetCtrl, UICtrl) => {
   };
 
   const ctrlAddItem = () => {
+    let input, newItem;
+
     // Get the field input data
-    const input = UICtrl.getInput();
+    input = UICtrl.getInput();
+
+    // Add the item to the budget controller
+    newItem = budgetCtrl.addItem(input.type, input.description, input.value);
   }
 
   return {
@@ -81,7 +114,7 @@ const controller = ((budgetCtrl, UICtrl) => {
       console.log('Budget App has started.');
       setupEventListeners();
     }
-  }
+  };
 
 })(budgetController, UIController);
 
