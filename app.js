@@ -17,6 +17,14 @@ const budgetController = (() => {
     }
   };
 
+  const calculateTotal = (type) => {
+    let sum = 0;
+    data.allItems[type].forEach((element) => {
+      sum += element.value;
+    })
+    data.totals[type] = sum;
+  };
+
   const data = {
     allItems: {
       exp: [],
@@ -79,7 +87,7 @@ const UIController = (() => {
       return {
         type: document.querySelector(DOMstrings.inputType).value,
         description: document.querySelector(DOMstrings.inputDescription).value,
-        value: document.querySelector(DOMstrings.inputValue).value
+        value: parseFloat(document.querySelector(DOMstrings.inputValue).value)
       };
     },
 
@@ -171,15 +179,17 @@ const controller = ((budgetCtrl, UICtrl) => {
     // Get the field input data
     const input = UICtrl.getInput();
 
-    // Add the item to the budget controller
-    const newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+    if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
+      // Add the item to the budget controller
+      const newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-    // Add the item to the UI
-    UICtrl.addListItem(newItem, input.type);
+      // Add the item to the UI
+      UICtrl.addListItem(newItem, input.type);
 
-    // Clear the fields
-    UICtrl.clearFields();
-  }
+      // Clear the fields
+      UICtrl.clearFields();
+    }
+  };
 
   return {
     init: () => {
