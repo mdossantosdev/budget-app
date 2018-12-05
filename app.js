@@ -33,7 +33,9 @@ const budgetController = (() => {
     totals: {
       exp: 0,
       inc: 0
-    }
+    },
+    budget: 0,
+    percentage: -1
   };
 
   return {
@@ -61,6 +63,19 @@ const budgetController = (() => {
 
       // Return the new element
       return newItem;
+    },
+
+    calculateBudget: () => {
+
+      // Calculate total income and expenses
+      calculateTotal('exp');
+      calculateTotal('inc');
+
+      // Calculate the budget: income - expenses
+      data.budget = data.totals.inc - data.totals.exp;
+
+      // Calculate the percentage of income that we spent
+      data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
     },
 
     testing: () => {
@@ -173,6 +188,12 @@ const controller = ((budgetCtrl, UICtrl) => {
         ctrlAddItem();
       }
     });
+  };
+
+  const updateBudget = () => {
+
+    // Calculate the budget
+    budgetCtrl.calculateBudget();
   };
 
   const ctrlAddItem = () => {
