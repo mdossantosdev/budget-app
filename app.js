@@ -111,6 +111,13 @@ const budgetController = (() => {
       })
     },
 
+    getPercentages: () => {
+      const percentages = data.allItems.exp.map((element) => {
+        return element.getPercentage();
+      });
+      return percentages;
+    },
+
     getBudget: () => {
       return {
         budget: data.budget,
