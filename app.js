@@ -7,6 +7,14 @@ const budgetController = (() => {
       this.description = description;
       this.value = value;
     }
+
+    calcPercentage(totalIncome) {
+      if (totalIncome > 0) {
+        this.percentage = Math.round((this.value / totalIncome) * 100);
+      } else {
+        this.percentage = -1;
+      }
+    }
   };
 
   class Income {
@@ -283,6 +291,7 @@ const controller = ((budgetCtrl, UICtrl) => {
       UICtrl.deleteListItem(itemId);
 
       // Update and show the new budget
+      updateBudget();
 
       // Calculate and update percentages
     }
