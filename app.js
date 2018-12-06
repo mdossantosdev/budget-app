@@ -149,6 +149,13 @@ const UIController = (() => {
     expensesLabel: '.budget__expenses--value',
     percentageLabel: '.budget__expenses--percentage',
     container: '.container',
+    expensesPercLabel: '.item__percentage',
+  };
+
+  const nodeListForEach = (list, callback) => {
+    for (let i = 0; i < list.length;i++) {
+      callback(list[i], i);
+    }
   };
 
   return {
@@ -190,7 +197,7 @@ const UIController = (() => {
             <div class="item__description">%description%</div>
             <div class="right clearfix">
               <div class="item__value">%value%</div>
-              <div class="item__percentage">21%</div>
+              <div class="item__percentage"></div>
               <div class="item__delete">
                 <button class="item__delete--btn">
                   <i class="ion-ios-close-outline"></i>
@@ -239,6 +246,18 @@ const UIController = (() => {
       }
     },
 
+    displayPercentages: (percentages) => {
+      const fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
+
+      nodeListForEach(fields, (element, index) => {
+        if (percentages[index] > 0) {
+          element.textContent = `${percentages[index]}%`;
+        } else {
+          element.textContent = '---';
+        }
+      })
+    },
+
     getDOMstrings: () => {
       return DOMstrings;
     }
@@ -282,8 +301,7 @@ const controller = ((budgetCtrl, UICtrl) => {
     const percentages = budgetCtrl.getPercentages();
 
     // Update the UI with the new percentage
-    console.log(percentages);
-
+    UICtrl.displayPercentages(percentages);
   };
 
   const ctrlAddItem = () => {
