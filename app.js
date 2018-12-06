@@ -15,6 +15,10 @@ const budgetController = (() => {
         this.percentage = -1;
       }
     }
+
+    getPercentage() {
+      return this.percentage;
+    }
   };
 
   class Income {
