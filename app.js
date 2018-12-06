@@ -65,8 +65,19 @@ const budgetController = (() => {
       return newItem;
     },
 
-    calculateBudget: () => {
+    deleteItem: (type, id) => {
+      const ids = data.allItems[type].map((element) => {
+        return element.id;
+      });
 
+      const index = ids.indexOf(id);
+
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+      }
+    },
+
+    calculateBudget: () => {
       // Calculate total income and expenses
       calculateTotal('exp');
       calculateTotal('inc');
@@ -223,7 +234,6 @@ const controller = ((budgetCtrl, UICtrl) => {
   };
 
   const updateBudget = () => {
-
     // Calculate the budget
     budgetCtrl.calculateBudget();
 
@@ -254,22 +264,23 @@ const controller = ((budgetCtrl, UICtrl) => {
   };
 
   const ctrlDeleteItem = (event) => {
-
     const itemId = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
     if (itemId) {
       const splitId = itemId.split('-');
       const type = splitId[0];
       const id = parseInt(splitId[1]);
+
+      // Delete the item from the data structure
+      budgetCtrl.deleteItem(type, id);
+
+      // Delete the item from the UI
+
+      // Update and show the new budget
+
+      // Calculate and update percentages
     }
 
-    // Delete the item from the data structure
-
-    // Delete the item from the UI
-
-    // Update and show the new budget
-
-    // Calculate and update percentages
 
   };
 
