@@ -274,6 +274,18 @@ const controller = ((budgetCtrl, UICtrl) => {
     UICtrl.displayBudget(budget);
   };
 
+  const updatePercentages = () => {
+    // Calculate percentages
+    budgetCtrl.calculatePercentages();
+
+    // Read percentages from the budget controller
+    const percentages = budgetCtrl.getPercentages();
+
+    // Update the UI with the new percentage
+    console.log(percentages);
+
+  };
+
   const ctrlAddItem = () => {
     // Get the field input data
     const input = UICtrl.getInput();
@@ -290,6 +302,9 @@ const controller = ((budgetCtrl, UICtrl) => {
 
       // Calculate and update budget
       updateBudget();
+
+      // Calculate and update percentages
+      updatePercentages();
     }
   };
 
@@ -311,9 +326,8 @@ const controller = ((budgetCtrl, UICtrl) => {
       updateBudget();
 
       // Calculate and update percentages
+      updatePercentages();
     }
-
-
   };
 
   return {
