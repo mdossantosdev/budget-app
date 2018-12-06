@@ -105,6 +105,12 @@ const budgetController = (() => {
       }
     },
 
+    calculatePercentages: () => {
+      data.allItems.exp.forEach((element) => {
+        element.calcPercentage(data.totals.inc);
+      })
+    },
+
     getBudget: () => {
       return {
         budget: data.budget,
