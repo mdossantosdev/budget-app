@@ -6,6 +6,7 @@ const budgetController = (() => {
       this.id = id;
       this.description = description;
       this.value = value;
+      this.percentage = -1;
     }
 
     calcPercentage(totalIncome) {
@@ -152,6 +153,17 @@ const UIController = (() => {
     expensesPercLabel: '.item__percentage',
   };
 
+  const formatNumber = (number, type) => {
+    const num = Math.abs(number).toFixed(2);
+
+    const numSplit = num.split('.');
+
+    const integer = numSplit[0].replace(/(?=(?:\d{3})+$)(?!^)/g, ',');
+    const decimal = numSplit[1];
+
+    return `${type === 'exp' ? '-' : '+'} $${integer}.${decimal}`;
+  };
+
   const nodeListForEach = (list, callback) => {
     for (let i = 0; i < list.length;i++) {
       callback(list[i], i);
@@ -211,7 +223,7 @@ const UIController = (() => {
       // Replace the placeholder text with some actual data
       newHtml = html.replace('%id%', obj.id);
       newHtml = newHtml.replace('%description%', obj.description);
-      newHtml = newHtml.replace('%value%', obj.value);
+      newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
 
       // Insert HTML into the DOM
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
@@ -235,9 +247,11 @@ const UIController = (() => {
     },
 
     displayBudget: (obj) => {
-      document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
-      document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
-      document.querySelector(DOMstrings.expensesLabel).textContent = obj.totalExp;
+      const type = obj.budget >= 0 ? 'inc' : 'exp';
+
+      document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget, type);
+      document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
+      document.querySelector(DOMstrings.expensesLabel).textContent = formatNumber(obj.totalExp, 'exp');
 
       if (obj.percentage > 0) {
         document.querySelector(DOMstrings.percentageLabel).textContent = `${obj.percentage}%`;
