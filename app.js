@@ -297,6 +297,20 @@ const UIController = (() => {
       document.querySelector(DOMstrings.dateLabel).textContent = `${months[month]} ${year}`;
     },
 
+    changedType: () => {
+      const fields = document.querySelectorAll(`
+        ${DOMstrings.inputType},
+        ${DOMstrings.inputDescription},
+        ${DOMstrings.inputValue}
+      `)
+
+      nodeListForEach(fields, (element) => {
+        element.classList.toggle('red-focus');
+      });
+
+      document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
+    },
+
     getDOMstrings: () => {
       return DOMstrings;
     }
@@ -319,6 +333,8 @@ const controller = ((budgetCtrl, UICtrl) => {
     });
 
     document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+    document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
   };
 
   const updateBudget = () => {
