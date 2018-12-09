@@ -151,6 +151,7 @@ const UIController = (() => {
     percentageLabel: '.budget__expenses--percentage',
     container: '.container',
     expensesPercLabel: '.item__percentage',
+    dateLabel: '.budget__title--month',
   };
 
   const formatNumber = (number, type) => {
@@ -272,6 +273,30 @@ const UIController = (() => {
       })
     },
 
+    displayMonth: () => {
+      const now = new Date();
+
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+
+      const month = now.getMonth();
+      const year = now.getFullYear();
+
+      document.querySelector(DOMstrings.dateLabel).textContent = `${months[month]} ${year}`;
+    },
+
     getDOMstrings: () => {
       return DOMstrings;
     }
@@ -365,6 +390,7 @@ const controller = ((budgetCtrl, UICtrl) => {
   return {
     init: () => {
       console.log('Budget App has started.');
+      UICtrl.displayMonth();
       UICtrl.displayBudget({
         budget: 0,
         totalInc: 0,
